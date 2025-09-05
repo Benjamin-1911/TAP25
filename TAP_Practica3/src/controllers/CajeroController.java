@@ -2,6 +2,10 @@ package controllers;
 import models.CajeroModel;
 import views.CajeroView;
 
+/**
+ *
+ * @author usuario
+ */
 public class CajeroController {
     private CajeroModel model;
     
@@ -9,12 +13,20 @@ public class CajeroController {
     
     private boolean sistemaActivo;
     
+    /**
+     *
+     * @param model
+     * @param view
+     */
     public CajeroController(CajeroModel model, CajeroView view){
     this.model = model;
     this.view = view;
     this.sistemaActivo = true;
     }
     
+    /**
+     *
+     */
     public void iniciarSistema(){
     view.mostrarBienvenida();
     while (sistemaActivo){
@@ -57,7 +69,7 @@ public class CajeroController {
             cambiarPIN();
             break;
         case 9:
-            salir();
+            salir("Gracias por usar nuestro sistema :)");
             break;
         default:
             break;
@@ -66,11 +78,17 @@ public class CajeroController {
     }
     }
     
+    /**
+     *
+     */
     public void consultarSaldo(){
     double saldo = model.consultarSaldo();
     view.mostrarSaldo(saldo);
     }
     
+    /**
+     *
+     */
     public void retirarRetiro(){
         double cantidad = view.solicitarCantidad("Retirar");
         if (cantidad <= 0){
@@ -87,6 +105,9 @@ public class CajeroController {
         }
     }
     
+    /**
+     *
+     */
     public void realizarDeposito(){
     double cantidad = view.solicitarCantidad("Transferir");
         if (cantidad <= 0){
@@ -103,6 +124,9 @@ public class CajeroController {
         }
     }
     
+    /**
+     *
+     */
     public void cambiarPIN(){
     String pin = view.cambiarPIN();
     if (pin == "Error"){
@@ -113,6 +137,9 @@ public class CajeroController {
         System.out.println("Su nuevo PIN es: "+pin);
     }
     
+    /**
+     *
+     */
     public void transferir(){
     double cantidad = view.solicitarCantidad("Transferencia");
         if (cantidad <= 0){
@@ -133,8 +160,13 @@ public class CajeroController {
         }
     }
     
-    public void salir(){
-    model.terminar();
+    /**
+     *
+     * @param <T>
+     * @param elemento
+     */
+    public <T> void salir(T elemento){
+    model.terminar(elemento);
     }
 }
 
