@@ -104,5 +104,18 @@ public class CajeroModel {
     System.out.println(elemento);
     System.exit(0);
     }
+    
+    
     //Tarea: Definir el metodo para transferir 
+
+public boolean realizarOperacion(Cuenta.OperacionBancaria operacion, double cantidad, String numeroCuentaDestino) {
+    Cuenta cuentaDestino = null;
+    if (numeroCuentaDestino != null) {
+        cuentaDestino = cuentas.get(numeroCuentaDestino);
+    }
+    return operacion.ejecutar(cuentaActual, cantidad, cuentaDestino);
 }
+}
+
+
+

@@ -54,5 +54,31 @@ public class Cuenta {
         saldo += cantidad;
     }
     }
+    
+    public interface OperacionBancaria {
+    boolean ejecutar(Cuenta cuenta, double cantidad, Cuenta cuentaDestino);
+    }
+    
+    public static class DepositoStrategy implements OperacionBancaria {
+    @Override
+    public boolean ejecutar(Cuenta cuenta, double cantidad, Cuenta cuentaDestino) {
+        if (cuenta != null && cantidad > 0) {
+            cuenta.depositar(cantidad);
+            return true;
+        }
+        return false;
+    }
+    }
+    
+    public static class TransferenciaStrategy implements OperacionBancaria {
+    @Override
+    public boolean ejecutar(Cuenta cuenta, double cantidad, Cuenta cuentaDestino) {
+        if (cuenta != null && cuentaDestino != null && cantidad > 0 && cuenta.retirar(cantidad)) {
+            cuentaDestino.depositar(cantidad);
+            return true;
+        }
+        return false;
+    }
+    }
     //Tarea: diseñar los comportamientos restantes (Transferir, cambiar PIN, etc (Al menos uno)
 }

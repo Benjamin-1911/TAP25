@@ -1,6 +1,8 @@
 package controllers;
 import models.CajeroModel;
 import views.CajeroView;
+import models.Cuenta.DepositoStrategy;
+import models.Cuenta.TransferenciaStrategy;
 
 /**
  *
@@ -109,20 +111,13 @@ public class CajeroController {
      *
      */
     public void realizarDeposito(){
-    double cantidad = view.solicitarCantidad("Transferir");
-        if (cantidad <= 0){
-        view.mostrarMensaje("Error en la cantidad");
-        return;
-        }
-        if (model.realizarRetiro(cantidad)){
-        view.mostrarMensaje("Retiro Exitoso de "+cantidad);
-        
-        }
-        else {
-        view.mostrarMensaje("Fondos Insuficientes");
-        
-        }
+    double cantidad = view.solicitarCantidad("Depositar");
+    if (model.realizarOperacion(new DepositoStrategy(), cantidad, null)) {
+        view.mostrarMensaje("Depósito exitoso de " + cantidad);
+    } else {
+        view.mostrarMensaje("Error en el depósito");
     }
+}
     
     /**
      *
@@ -142,23 +137,15 @@ public class CajeroController {
      */
     public void transferir(){
     double cantidad = view.solicitarCantidad("Transferencia");
-        if (cantidad <= 0){
-        view.mostrarMensaje("Error en la cantidad");
-        return;
-        }
-    String cuenta = view.solicitarNumeroCuenta();
-        if (cuenta == "Falso"){
-        view.mostrarMensaje("Error en la cantidad");
-        return;
-        }
-        if (model.realizarTransferencia(cantidad)){
-        view.mostrarMensaje("Transferencia Exitosa de "+cantidad + " a " + cuenta);
-        }
-        else {
-        view.mostrarMensaje("Fondos Insuficientes");
-        
-        }
+    String cuentaDestino = view.solicitarCuenta();
+
+    if (model.realizarOperacion(new TransferenciaStrategy(), cantidad, cuentaDestino)) {
+        view.mostrarMensaje("Transferencia exitosa de " + cantidad + " a la cuenta " + cuentaDestino);
+    } else {
+        view.mostrarMensaje("Error en la transferencia (cuenta inválida o fondos insuficientes)");
     }
+}
+
     
     /**
      *
